@@ -49,8 +49,6 @@ class DBManager:
                                 )
                             """)
 
-        conn_hh.close()
-
     def insert_to_table_companies(self, content: dict) -> None:
         """Добавление значений в таблицу companies"""
         with psycopg2.connect(database=self.database_name, **self.params) as conn_hh:
@@ -60,7 +58,6 @@ class DBManager:
                     tuple_data = int(key), value
                     cur.execute("INSERT INTO companies (employer_id, company_name) "
                                 "VALUES (%s, %s)", tuple_data)
-        conn_hh.close()
 
     def insert_to_table_vacancies(self, data_list: list) -> None:
         """ Добавление значений в таблицу companies """
@@ -71,7 +68,6 @@ class DBManager:
                     cur.execute("INSERT INTO vacancies "
                                 "(title, employer_id, url, description, city, publication_date, salary_from, salary_to) "
                                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", i)
-        conn_hh.close()
 
     def get_companies_and_vacancies_count(self) -> pd.DataFrame:
         """ Получает список всех компаний и количество вакансий у каждой компании"""
@@ -88,7 +84,7 @@ class DBManager:
                 )
                 rows = cur.fetchall()
         db_table = pd.DataFrame(rows, columns=['company_name', 'count_vacancies'], index=range(1, len(rows) + 1))
-        conn_hh.close()
+
         return db_table
 
     def get_all_vacancies(self) -> pd.DataFrame:
@@ -106,7 +102,7 @@ class DBManager:
                 rows = cur.fetchall()
         db_table = pd.DataFrame(rows, columns=['company_name', 'title', 'salary_From', 'salary_to', 'url'],
                                 index=range(1, len(rows) + 1))
-        conn_hh.close()
+
         return db_table
 
     def get_avg_salary(self) -> pd.DataFrame:
@@ -122,7 +118,7 @@ class DBManager:
                 )
                 rows = cur.fetchall()
         db_table = pd.DataFrame(rows, columns=['avg_salary'], index=range(1, len(rows) + 1))
-        conn_hh.close()
+
         return db_table
 
     def get_vacancies_with_higher_salary(self) -> pd.DataFrame:
@@ -144,7 +140,7 @@ class DBManager:
                 rows = cur.fetchall()
             db_table = pd.DataFrame(rows, columns=['company_name', 'title', 'url', 'salary_from', 'salary_to'],
                                     index=range(1, len(rows) + 1))
-        conn_hh.close()
+
         return db_table
 
     def get_vacancies_with_keyword(self, keyword: str) -> pd.DataFrame:
@@ -156,12 +152,12 @@ class DBManager:
                     SELECT company_name, title, url, salary_from, salary_to, publication_date
                     FROM vacancies
                     JOIN companies USING(employer_id)
-                    WHERE title LIKE '%{keyword}%'
+                    WHERE title ILIKE '%{keyword}%'
                     ORDER BY publication_date
                 """
                 )
                 rows = cur.fetchall()
         db_table = pd.DataFrame(rows, columns=['company_name', 'title', 'url', 'salary_from', 'salary_to',
                                                'publication_date'], index=range(1, len(rows) + 1))
-        conn_hh.close()
+
         return db_table
