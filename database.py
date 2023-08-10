@@ -66,7 +66,7 @@ class DBManager:
             with conn_hh.cursor() as cur:
                 for i in data_list:
                     cur.execute("INSERT INTO vacancies "
-                                "(title, employer_id, url, description, city, publication_date, salary_from, salary_to) "
+                                "(title, employer_id, url, description, city, publication_date, salary_from, salary_to)"
                                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", i)
 
     def get_companies_and_vacancies_count(self) -> pd.DataFrame:
@@ -79,7 +79,7 @@ class DBManager:
                             FROM companies
                             JOIN vacancies USING(employer_id)
                             GROUP BY company_name
-                            ORDER BY count_vacancies DESC  
+                            ORDER BY count_vacancies DESC       
                         """
                 )
                 rows = cur.fetchall()
@@ -88,7 +88,8 @@ class DBManager:
         return db_table
 
     def get_all_vacancies(self) -> pd.DataFrame:
-        """ Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию. """
+        """ Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на
+        вакансию. """
         with psycopg2.connect(database=self.database_name, **self.params) as conn_hh:
             with conn_hh.cursor() as cur:
                 cur.execute(

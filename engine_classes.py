@@ -6,7 +6,7 @@ class HH:
         """Получение вакансий с hh.ru по API"""
         self.employer_id = employer_id
         self.vacancy_list = []
-        self.data = requests.get(f"https://api.hh.ru/vacancies?",
+        self.data = requests.get("https://api.hh.ru/vacancies?",
                                  params={'employer_id': employer_id}).json()
         self.vacancy_list.append(self.data)
 

@@ -8,6 +8,9 @@ packages = [{include = "database_with_hh"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+psycopg2-binary = "^2.9.7"
+python-dotenv = "^1.0.0"
+flake8 = "^6.1.0"
 
 
 [build-system]

@@ -14,10 +14,10 @@ def get_data_from_env() -> dict:
     """Читает файл .env и возвращает словарь с данными для подключения к БД"""
     load_dotenv()
     db_config = {
-                    'host': os.getenv('host'),
-                    'user': os.getenv('user'),
-                    'password': os.getenv('password'),
-                    'port': os.getenv('port')
+                    'host': os.getenv('HOST'),
+                    'user': os.getenv('USER'),
+                    'password': os.getenv('PASSWORD'),
+                    'port': os.getenv('PORT')
     }
     return db_config
 
